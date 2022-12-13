@@ -41,4 +41,10 @@ public class Product {
     @ManyToOne(optional = false)
     @JoinColumn(name = "brandId", nullable = false)
     private Brand brand;
+
+    public Product(String title, BigDecimal price, String photo) {
+        this.title = title;
+        this.price = price;
+        this.photo = photo;
+    }
 }
