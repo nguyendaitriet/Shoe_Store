@@ -3,7 +3,7 @@
 
 <head>
   <th:block th:replace="layout/head :: head"/>
-  <title>Minics</title>
+  <title>Shoe Store</title>
 
 </head>
 
@@ -195,7 +195,8 @@
           Our Products
         </h2>
       </div>
-      <div class="row">
+      <div class="row product-area">
+
         <div class="col-sm-6 col-lg-4">
           <div class="box">
             <div class="img-box">
@@ -232,6 +233,7 @@
             </div>
           </div>
         </div>
+
         <div class="col-sm-6 col-lg-4">
           <div class="box">
             <div class="img-box">
@@ -266,6 +268,7 @@
             </div>
           </div>
         </div>
+
         <div class="col-sm-6 col-lg-4">
           <div class="box">
             <div class="img-box">
@@ -300,6 +303,7 @@
             </div>
           </div>
         </div>
+
       </div>
       <div class="btn_box">
         <a href="" class="view_more-link">
@@ -651,6 +655,7 @@
   </footer>
   <!-- footer section -->
 
+  <th:block th:include="business/temp-list-home-product :: temp-list-home-product"/>
   <th:block th:replace="layout/script :: script"/>
 
 </body>

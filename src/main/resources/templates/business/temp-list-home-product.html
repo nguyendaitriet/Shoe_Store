@@ -1,0 +1,43 @@
+<html xmlns:th="http://www.thymeleaf.org" lang="en">
+
+<th:block th:fragment="temp-list-home-product">
+    <textarea id="tempHomeProduct" style="display:none">
+        <div class="col-sm-6 col-lg-4">
+          <div class="box">
+            <div class="img-box">
+              <img src={1} alt="">
+              <a href="" class="add_cart_btn">
+                <span>
+                  Add To Cart
+                </span>
+              </a>
+            </div>
+            <div class="detail-box">
+              <h5>
+                {0}
+              </h5>
+              <div class="product_info">
+                <h5>
+                  <span>$</span> {2}
+                </h5>
+
+                <select class="form-control ml-5 mr-3">
+                  <option>Size</option>
+                  <option>40</option>
+                  <option>41</option>
+                </select>
+
+                <div class="quantity buttons_added">
+                  <input type="button" value="-" class="minus">
+                  <input type="number" step="1" min="1" max="" name="quantity" value="1" title="Qty"
+                    class="input-text qty text" size="4" pattern="" inputmode="">
+                  <input type="button" value="+" class="plus">
+                </div>
+
+              </div>
+            </div>
+          </div>
+        </div>
+
+    </textarea>
+</th:block>

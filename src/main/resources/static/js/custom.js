@@ -7,12 +7,15 @@ function getYear() {
 
 getYear();
 
-jQuery(function($) {
+$(function($) {
+    page.loadData.getAllHomeProducts();
+
     $('.plus').click(function() {
         $qty = $(this).parent().find('.qty');
         qty = parseInt($qty.val()) + 1;
         $qty.val(qty);
     });
+
     $('.minus').click(function() {
         $qty = $(this).parent().find('.qty');
         qty = parseInt($qty.val()) - 1;
@@ -20,4 +23,57 @@ jQuery(function($) {
             qty = 0;
         $qty.val(qty);
     });
+
 });
+
+let page = {
+    urls: {
+        getAllHomeProducts: CommonApp.BASE_URL_PRODUCT,
+    },
+    element: {},
+    loadData: {},
+    commands: {},
+    dialogs: {
+        element: {},
+        loadData: {},
+        commands: {},
+        close: {},
+        alertDanger: {},
+        inputError: {}
+    }
+}
+
+let homeProduct = {
+    title:{},
+    photo:{},
+    price:{}
+}
+
+page.element.productArea = $('.product-area');
+page.element.tempHomeProduct = $('#tempHomeProduct');
+page.element.plusQuantity = $
+
+page.loadData.getAllHomeProducts = () => {
+    return $.ajax({
+        type: "GET",
+        url: page.urls.getAllHomeProducts
+    })
+        .done((data) => {
+
+            $.each(data, (index, item) => {
+                homeProduct = item;
+                page.commands.addHomeProduct();
+            });
+
+        })
+        .fail(() => {
+            // App.SweetAlert.showErrorAlert("Drug list not found!");
+            alert('Error');
+        })
+}
+
+let tempHomeProduct = $.validator.format($.trim(page.element.tempHomeProduct.val().toString()));
+
+page.commands.addHomeProduct = () => {
+    page.element.productArea.prepend($(tempHomeProduct(homeProduct.title, homeProduct.photo, homeProduct.price)));
+}

@@ -10,8 +10,9 @@ import java.util.List;
 
 @Repository
 public interface ProductDAO extends JpaRepository<Product, Integer> {
-
-    @Query("SELECT NEW com.shoe.dto.product.HomeProductResult (" +
+//        HQL
+//        SQL
+        @Query(value = "SELECT NEW com.shoe.dto.product.HomeProductResult (" +
                 "d.title, " +
                 "d.price, " +
                 "d.photo " +
