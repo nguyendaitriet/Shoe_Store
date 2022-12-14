@@ -22,6 +22,7 @@ public class ProductServiceImpl implements ProductService {
     @Override
     public List<HomeProductResult> findAllHomeProducts() {
         List<Product>productList = productDAO.findAll();
+
         return productList.stream().map(item ->
                 productMapper.toDTO(item, productDAO.findAllSizeById(item.getId()))
         ).toList();

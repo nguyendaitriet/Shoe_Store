@@ -19,4 +19,6 @@ public interface ProductDAO extends JpaRepository<Product, Integer> {
             "WHERE i.product.id = :id " +
             "ORDER BY s.sizeNumber")
     List<Size> findAllSizeById(@Param("id") Integer id);
+
+
 }
