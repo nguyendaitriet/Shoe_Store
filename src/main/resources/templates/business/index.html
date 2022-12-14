@@ -216,7 +216,7 @@
                   <span>$</span> 300
                 </h5>
 
-                <select class="form-control ml-5 mr-3">
+                <select class="form-control ml-5 mr-3 size-option">
                   <option>Size</option>
                   <option>40</option>
                   <option>41</option>
@@ -656,6 +656,7 @@
   <!-- footer section -->
 
   <th:block th:include="business/temp-list-home-product :: temp-list-home-product"/>
+  <th:block th:include="business/temp-option :: temp-option"/>
   <th:block th:replace="layout/script :: script"/>
 
 </body>

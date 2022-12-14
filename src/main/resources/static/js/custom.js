@@ -7,7 +7,7 @@ function getYear() {
 
 getYear();
 
-$(function() {
+$(function () {
     page.loadData.getAllHomeProducts();
     page.initializeControlEvent();
 });
@@ -30,14 +30,18 @@ let page = {
 }
 
 let homeProduct = {
-    title:{},
-    photo:{},
-    price:{}
+    id: {},
+    title: {},
+    photo: {},
+    price: {},
+    sizeList: {}
 }
 
 page.element.productArea = $('.product-area');
+page.element.sizeOption = $('.size-option');
+
 page.element.tempHomeProduct = $('#tempHomeProduct');
-page.element.plusQuantity = $
+page.element.tempOption = $('#tempOption');
 
 page.loadData.getAllHomeProducts = () => {
     return $.ajax({
@@ -46,9 +50,12 @@ page.loadData.getAllHomeProducts = () => {
     })
         .done((data) => {
 
-            $.each(data, (index, item) => {
-                homeProduct = item;
-                page.commands.addHomeProduct();
+            $.each(data, (index, productItem) => {
+                page.commands.addHomeProduct(productItem);
+                $.each(productItem.sizeList, (index, item) => {
+                    console.log(item)
+                    $(`.size-option-${productItem.id}`).append($(tempOption(item.id, item.sizeNumber)));
+                })
             });
 
         })
@@ -59,9 +66,10 @@ page.loadData.getAllHomeProducts = () => {
 }
 
 let tempHomeProduct = $.validator.format($.trim(page.element.tempHomeProduct.val().toString()));
+let tempOption = $.validator.format($.trim(page.element.tempOption.val().toString()));
 
-page.commands.addHomeProduct = () => {
-    page.element.productArea.prepend($(tempHomeProduct(homeProduct.title, homeProduct.photo, homeProduct.price)));
+page.commands.addHomeProduct = (homeProduct) => {
+    page.element.productArea.prepend($(tempHomeProduct(homeProduct.id, homeProduct.title, homeProduct.photo, homeProduct.price)));
 }
 
 page.commands.handlePlusQuantity = () => {
