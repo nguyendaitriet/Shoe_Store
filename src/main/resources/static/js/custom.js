@@ -43,6 +43,10 @@ page.element.sizeOption = $('.size-option');
 page.element.tempHomeProduct = $('#tempHomeProduct');
 page.element.tempOption = $('#tempOption');
 
+page.element.cartLink = $('.cart-link');
+
+page.dialogs.element.modalCart = $('#mdCart');
+
 page.loadData.getAllHomeProducts = () => {
     return $.ajax({
         type: "GET",
@@ -89,7 +93,14 @@ page.commands.handleMinusQuantity = () => {
     })
 }
 
+page.commands.handleCartLink = () => {
+    page.element.cartLink.on('click', () => {
+        page.dialogs.element.modalCart.modal('show');
+    })
+}
+
 page.initializeControlEvent = () => {
+    page.commands.handleCartLink();
     page.commands.handlePlusQuantity();
     page.commands.handleMinusQuantity();
 }
