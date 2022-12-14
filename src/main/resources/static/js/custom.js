@@ -7,23 +7,9 @@ function getYear() {
 
 getYear();
 
-$(function($) {
+$(function() {
     page.loadData.getAllHomeProducts();
-
-    $('.plus').click(function() {
-        $qty = $(this).parent().find('.qty');
-        qty = parseInt($qty.val()) + 1;
-        $qty.val(qty);
-    });
-
-    $('.minus').click(function() {
-        $qty = $(this).parent().find('.qty');
-        qty = parseInt($qty.val()) - 1;
-        if (qty < 0)
-            qty = 0;
-        $qty.val(qty);
-    });
-
+    page.initializeControlEvent();
 });
 
 let page = {
@@ -76,4 +62,26 @@ let tempHomeProduct = $.validator.format($.trim(page.element.tempHomeProduct.val
 
 page.commands.addHomeProduct = () => {
     page.element.productArea.prepend($(tempHomeProduct(homeProduct.title, homeProduct.photo, homeProduct.price)));
+}
+
+page.commands.handlePlusQuantity = () => {
+    $(document).on('click', '.plus', function () {
+        $qty = $(this).parent().find('.qty');
+        qty = parseInt($qty.val()) + 1;
+        $qty.val(qty);
+    })
+}
+
+page.commands.handleMinusQuantity = () => {
+    $(document).on('click', '.plus', function () {
+        $qty = $(this).parent().find('.qty');
+        qty = parseInt($qty.val()) - 1;
+        if (qty < 0) qty = 0;
+        $qty.val(qty);
+    })
+}
+
+page.initializeControlEvent = () => {
+    page.commands.handlePlusQuantity();
+    page.commands.handleMinusQuantity();
 }

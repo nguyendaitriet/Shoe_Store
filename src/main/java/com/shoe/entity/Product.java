@@ -22,29 +22,17 @@ public class Product {
     @Column(name = "title", length = 100, nullable = false)
     private String title;
 
-    @Column(name = "quantity", nullable = false)
-    private int quantity;
-
     @Column(name = "price")
     private BigDecimal price;
-
-    @Column(name = "createdAt")
-    private Instant createdAt;
 
     @Column(name = "photo", length = 500)
     private String photo;
 
-    @ManyToOne(optional = false)
-    @JoinColumn(name = "sizeId", nullable = false)
-    private Size size;
+    @Column(name = "createdAt")
+    private Instant createdAt;
 
     @ManyToOne(optional = false)
     @JoinColumn(name = "brandId", nullable = false)
     private Brand brand;
 
-    public Product(String title, BigDecimal price, String photo) {
-        this.title = title;
-        this.price = price;
-        this.photo = photo;
-    }
 }

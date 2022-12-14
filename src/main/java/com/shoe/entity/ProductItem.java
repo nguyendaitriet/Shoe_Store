@@ -6,16 +6,15 @@ import lombok.NoArgsConstructor;
 import lombok.Setter;
 
 import javax.persistence.*;
-import java.math.BigDecimal;
 import java.time.Instant;
 
 @Entity
-@Table(name = "order_item")
+@Table(name = "product_item")
 @Setter
 @Getter
 @NoArgsConstructor
 @AllArgsConstructor
-public class OrderItem {
+public class ProductItem {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -25,17 +24,17 @@ public class OrderItem {
     @Column(name = "quantity", nullable = false)
     private int quantity;
 
-    @Column(name = "price", nullable = false)
-    private BigDecimal price;
-
     @Column(name = "createdAt")
     private Instant createdAt;
 
     @ManyToOne(optional = false)
-    @JoinColumn(name = "orderId", nullable = false)
-    private Order order;
+    @JoinColumn(name = "sizeId", nullable = false)
+    private Size size;
 
     @ManyToOne(optional = false)
-    @JoinColumn(name = "productItemId", nullable = false)
-    private ProductItem productItem;
+    @JoinColumn(name = "productId", nullable = false)
+    private Product product;
+
 }
+
+
