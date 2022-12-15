@@ -32,14 +32,6 @@ let page = {
     }
 }
 
-let homeProduct = {
-    id: {},
-    title: {},
-    photo: {},
-    price: {},
-    sizeList: {}
-}
-
 page.element.productArea = $('.product-area');
 page.element.sizeOption = $('.size-option');
 
@@ -50,7 +42,9 @@ page.element.tempCartProduct = $('#tempCartProduct');
 page.element.cartLink = $('.cart-link');
 
 page.dialogs.element.modalCart = $('#mdCart');
+page.dialogs.element.grandTotalPrice = $('.grand-total-price');
 page.dialogs.element.tbCartProductBody = $('.tb-cart-product tbody');
+page.dialogs.element.btnUpdateCart = $('#btn-update-cart');
 page.dialogs.commands.addCartProductToList = (cartProduct) => {
     page.dialogs.element.tbCartProductBody.append($(tempCartProduct(cartProduct.productItemId, cartProduct.sizeId,
         cartProduct.photo, cartProduct.title,cartProduct.price, cartProduct.quantity, cartProduct.totalPrice)));
@@ -61,18 +55,21 @@ page.dialogs.loadData.getAllCartProducts = () => {
         url: page.urls.getAllCartProducts
     })
     .done((data) => {
+        let grandTotalPrice = 0;
+
         $.each(data, (index, cartItem) => {
             page.dialogs.commands.addCartProductToList(cartItem);
-
+            grandTotalPrice += cartItem.totalPrice;
             $.when(
                 $.each(cartItem.sizeList, (index, item) => {
                     $(`.size-option-cart-product-${cartItem.productItemId}`).append($(tempOption(item.id, item.sizeNumber)));
                 })
             ).done(() => {
-                // $(`.size-option-cart-product-${cartItem.productId} option[value=${cartItem.sizeId}]`).attr("selected");
                 $(`.size-option-cart-product-${cartItem.productItemId}`).val(`${cartItem.sizeId}`).change();
             })
         });
+
+        page.dialogs.element.grandTotalPrice.text(`${grandTotalPrice}$`);
     })
     .fail((jqXHR) => {
         CommonApp.handleFailedTasks(jqXHR);
@@ -163,7 +160,6 @@ page.commands.handleAddToCartBtn = () => {
         })
 
         $(`#quantity-${id}`).val(1);
-        // $(`.size-option-${id}`).val($("#target option:first").val());
         $(`.size-option-${id}`).prop("selectedIndex", 1).change();
     });
 }
