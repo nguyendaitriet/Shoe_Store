@@ -38,4 +38,5 @@ public class CartProduct {
     public int hashCode() {
         return Objects.hash(productItemId);
     }
+
 }

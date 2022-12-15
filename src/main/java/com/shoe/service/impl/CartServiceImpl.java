@@ -39,10 +39,12 @@ public class CartServiceImpl implements CartService {
 
     @Override
     public void addProduct(CartProductParam cartProductParam) {
+
         Product product = productDAO.findById(cartProductParam.getProductId()).get();
         BigDecimal totalPrice = product.getPrice().multiply(new BigDecimal(cartProductParam.getQuantity()));
         List<Size> sizeList = productDAO.findAllSizeById(product.getId());
         int productItemId = productItemDAO.findProductItemId(cartProductParam.getProductId(), cartProductParam.getSizeId());
+
         CartProduct newCartProduct = new CartProduct()
                 .setProductItemId(productItemId)
                 .setTitle(product.getTitle())
@@ -52,9 +54,13 @@ public class CartServiceImpl implements CartService {
                 .setTotalPrice(totalPrice)
                 .setSizeId(cartProductParam.getSizeId())
                 .setSizeList(sizeList);
+
         cartList.add(newCartProduct);
+
     }
 
+    //Interface Comparable: int compareTo(Object o);
+    //Interface Comparator: int compare(Object o1, Object o2);
     public void modifyCartProductList(ArrayList<CartProduct> cartProductList) {
         cartProductList.sort(Comparator.comparing(CartProduct::getProductItemId));
         for (int i = 0; i < cartProductList.size() - 1; ) {
@@ -68,6 +74,7 @@ public class CartServiceImpl implements CartService {
             }
             i++;
         }
+
     }
 
     @Override

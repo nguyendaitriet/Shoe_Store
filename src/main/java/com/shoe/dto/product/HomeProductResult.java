@@ -1,5 +1,6 @@
 package com.shoe.dto.product;
 
+import com.shoe.dto.cart.CartProductParam;
 import com.shoe.entity.Size;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
@@ -21,4 +22,6 @@ public class HomeProductResult {
     private BigDecimal price;
     private String photo;
     private List<Size> sizeList;
+
 }
+

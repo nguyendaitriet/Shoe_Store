@@ -143,6 +143,7 @@ page.commands.handleAddToCartBtn = () => {
         cartProductParam.productId = id;
         cartProductParam.quantity = $(`#quantity-${id}`).val();
         cartProductParam.sizeId = $(`.size-option-${id}`).find(":selected").val();
+
         $.ajax({
             type: "POST",
             headers: {
