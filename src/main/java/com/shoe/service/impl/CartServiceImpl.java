@@ -1,8 +1,10 @@
 package com.shoe.service.impl;
 
 import com.shoe.dao.ProductDAO;
+import com.shoe.dao.ProductItemDAO;
 import com.shoe.dto.cart.CartProductParam;
 import com.shoe.entity.Product;
+import com.shoe.entity.Size;
 import com.shoe.model.CartProduct;
 import com.shoe.service.CartService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -21,6 +23,9 @@ public class CartServiceImpl implements CartService {
     @Autowired
     ProductDAO productDAO;
 
+    @Autowired
+    ProductItemDAO productItemDAO;
+
     public CartServiceImpl(ArrayList<CartProduct> cartList) {
         this.cartList = cartList;
     }
@@ -28,6 +33,7 @@ public class CartServiceImpl implements CartService {
     @Override
     public List<CartProduct> getAllCartProducts() {
         modifyCartProductList(cartList);
+        cartList.sort(Comparator.comparing(CartProduct::getTitle));
         return cartList;
     }
 
@@ -35,20 +41,22 @@ public class CartServiceImpl implements CartService {
     public void addProduct(CartProductParam cartProductParam) {
         Product product = productDAO.findById(cartProductParam.getProductId()).get();
         BigDecimal totalPrice = product.getPrice().multiply(new BigDecimal(cartProductParam.getQuantity()));
+        List<Size> sizeList = productDAO.findAllSizeById(product.getId());
+        int productItemId = productItemDAO.findProductItemId(cartProductParam.getProductId(), cartProductParam.getSizeId());
         CartProduct newCartProduct = new CartProduct()
-                .setProductId(cartProductParam.getProductId())
+                .setProductItemId(productItemId)
                 .setTitle(product.getTitle())
                 .setPhoto(product.getPhoto())
                 .setQuantity(cartProductParam.getQuantity())
                 .setPrice(product.getPrice())
                 .setTotalPrice(totalPrice)
-                .setSizeId(cartProductParam.getSizeId());
+                .setSizeId(cartProductParam.getSizeId())
+                .setSizeList(sizeList);
         cartList.add(newCartProduct);
-        System.out.println(cartList);
     }
 
     public void modifyCartProductList(ArrayList<CartProduct> cartProductList) {
-        cartProductList.sort(Comparator.comparing(CartProduct::getProductId).thenComparingInt(CartProduct::getQuantity));
+        cartProductList.sort(Comparator.comparing(CartProduct::getProductItemId));
         for (int i = 0; i < cartProductList.size() - 1; ) {
             CartProduct cartProduct1 = cartProductList.get(i);
             CartProduct cartProduct2 = cartProductList.get(i + 1);

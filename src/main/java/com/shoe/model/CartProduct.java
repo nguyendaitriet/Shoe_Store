@@ -1,5 +1,6 @@
 package com.shoe.model;
 
+import com.shoe.entity.Size;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -7,7 +8,7 @@ import lombok.Setter;
 import lombok.experimental.Accessors;
 
 import java.math.BigDecimal;
-import java.time.Instant;
+import java.util.List;
 import java.util.Objects;
 
 @Setter
@@ -16,24 +17,25 @@ import java.util.Objects;
 @AllArgsConstructor
 @Accessors(chain = true)
 public class CartProduct {
-    private int productId;
+    private int productItemId;
     private int sizeId;
     private String photo;
     private String title;
     private BigDecimal price;
     private int quantity;
     private BigDecimal totalPrice;
+    private List<Size> sizeList;
 
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
         CartProduct that = (CartProduct) o;
-        return productId == that.productId && sizeId == that.sizeId;
+        return productItemId == that.productItemId;
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(productId, sizeId);
+        return Objects.hash(productItemId);
     }
 }

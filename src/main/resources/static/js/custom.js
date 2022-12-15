@@ -52,7 +52,7 @@ page.element.cartLink = $('.cart-link');
 page.dialogs.element.modalCart = $('#mdCart');
 page.dialogs.element.tbCartProductBody = $('.tb-cart-product tbody');
 page.dialogs.commands.addCartProductToList = (cartProduct) => {
-    page.dialogs.element.tbCartProductBody.append($(tempCartProduct(cartProduct.productId, cartProduct.sizeId,
+    page.dialogs.element.tbCartProductBody.append($(tempCartProduct(cartProduct.productItemId, cartProduct.sizeId,
         cartProduct.photo, cartProduct.title,cartProduct.price, cartProduct.quantity, cartProduct.totalPrice)));
 }
 page.dialogs.loadData.getAllCartProducts = () => {
@@ -61,18 +61,21 @@ page.dialogs.loadData.getAllCartProducts = () => {
         url: page.urls.getAllCartProducts
     })
     .done((data) => {
-
         $.each(data, (index, cartItem) => {
             page.dialogs.commands.addCartProductToList(cartItem);
 
-            // $.each(productItem.sizeList, (index, item) => {
-            //     $(`.size-option-${productItem.id}`).append($(tempOption(item.id, item.sizeNumber)));
-            // })
+            $.when(
+                $.each(cartItem.sizeList, (index, item) => {
+                    $(`.size-option-cart-product-${cartItem.productItemId}`).append($(tempOption(item.id, item.sizeNumber)));
+                })
+            ).done(() => {
+                // $(`.size-option-cart-product-${cartItem.productId} option[value=${cartItem.sizeId}]`).attr("selected");
+                $(`.size-option-cart-product-${cartItem.productItemId}`).val(`${cartItem.sizeId}`).change();
+            })
         });
     })
-    .fail(() => {
-        // App.SweetAlert.showErrorAlert("Drug list not found!");
-        alert('Error');
+    .fail((jqXHR) => {
+        CommonApp.handleFailedTasks(jqXHR);
     })
 }
 page.dialogs.close.modalCart = () => {
@@ -95,9 +98,8 @@ page.loadData.getAllHomeProducts = () => {
             });
 
         })
-        .fail(() => {
-            // App.SweetAlert.showErrorAlert("Drug list not found!");
-            alert('Error');
+        .fail((jqXHR) => {
+            CommonApp.handleFailedTasks(jqXHR);
         })
 }
 
@@ -130,7 +132,6 @@ page.commands.handleCartLink = () => {
     page.element.cartLink.on('click', () => {
         page.dialogs.element.modalCart.modal('show');
         page.dialogs.loadData.getAllCartProducts();
-
     })
 }
 
@@ -154,15 +155,16 @@ page.commands.handleAddToCartBtn = () => {
             url: page.urls.addCartProductToList,
             data: JSON.stringify(cartProductParam)
         })
-        .done((data) => {
-            alert('Success');
-
+        .done(() => {
+            CommonApp.SweetAlert.showSuccessAlert('Add to cart successfully!')
         })
-        .fail(() => {
-            // App.SweetAlert.showErrorAlert("Drug list not found!");
-            alert('Error');
+        .fail((jqXHR) => {
+            CommonApp.handleFailedTasks(jqXHR);
         })
 
+        $(`#quantity-${id}`).val(1);
+        // $(`.size-option-${id}`).val($("#target option:first").val());
+        $(`.size-option-${id}`).prop("selectedIndex", 1).change();
     });
 }
 
