@@ -42,7 +42,7 @@
                   My Account
                 </span>
               </a>
-              <a href="#" class="cart-link">
+              <a href="javascript:;" class="cart-link">
                 <i class="fa fa-shopping-cart" aria-hidden="true"></i>
                 <span>
                   Cart
@@ -195,116 +195,10 @@
           Our Products
         </h2>
       </div>
+
       <div class="row product-area">
-
-        <div class="col-sm-6 col-lg-4">
-          <div class="box">
-            <div class="img-box">
-              <img src="/images/products/01.jpg" alt="">
-              <a href="" class="add_cart_btn">
-                <span>
-                  Add To Cart
-                </span>
-              </a>
-            </div>
-            <div class="detail-box">
-              <h5>
-                Product Name
-              </h5>
-              <div class="product_info">
-                <h5>
-                  <span>$</span> 300
-                </h5>
-
-                <select class="form-control ml-5 mr-3 size-option">
-                  <option>Size</option>
-                  <option>40</option>
-                  <option>41</option>
-                </select>
-
-                <div class="quantity buttons_added">
-                  <input type="button" value="-" class="minus">
-                  <input type="number" step="1" min="1" max="" name="quantity" value="1" title="Qty"
-                    class="input-text qty text" size="4" pattern="" inputmode="">
-                  <input type="button" value="+" class="plus">
-                </div>
-
-              </div>
-            </div>
-          </div>
-        </div>
-
-        <div class="col-sm-6 col-lg-4">
-          <div class="box">
-            <div class="img-box">
-              <img src="images/p2.png" alt="">
-              <a href="" class="add_cart_btn">
-                <span>
-                  Add To Cart
-                </span>
-              </a>
-            </div>
-            <div class="detail-box">
-              <h5>
-                Product Name
-              </h5>
-              <div class="product_info">
-                <h5>
-                  <span>$</span> 300
-                </h5>
-                <select class="form-control ml-5 mr-3">
-                  <option>Size</option>
-                  <option>40</option>
-                  <option>41</option>
-                </select>
-
-                <div class="quantity buttons_added">
-                  <input type="button" value="-" class="minus">
-                  <input type="number" step="1" min="1" max="" name="quantity" value="1" title="Qty"
-                    class="input-text qty text" size="4" pattern="" inputmode="">
-                  <input type="button" value="+" class="plus">
-                </div>
-              </div>
-            </div>
-          </div>
-        </div>
-
-        <div class="col-sm-6 col-lg-4">
-          <div class="box">
-            <div class="img-box">
-              <img src="images/p3.png" alt="">
-              <a href="" class="add_cart_btn">
-                <span>
-                  Add To Cart
-                </span>
-              </a>
-            </div>
-            <div class="detail-box">
-              <h5>
-                Product Name
-              </h5>
-              <div class="product_info">
-                <h5>
-                  <span>$</span> 300
-                </h5>
-                <select class="form-control ml-5 mr-3">
-                  <option>Size</option>
-                  <option>40</option>
-                  <option>41</option>
-                </select>
-
-                <div class="quantity buttons_added">
-                  <input type="button" value="-" class="minus">
-                  <input type="number" step="1" min="1" max="" name="quantity" value="1" title="Qty"
-                    class="input-text qty text" size="4" pattern="" inputmode="">
-                  <input type="button" value="+" class="plus">
-                </div>
-              </div>
-            </div>
-          </div>
-        </div>
-
       </div>
+
       <div class="btn_box">
         <a href="" class="view_more-link">
           View More
@@ -656,6 +550,7 @@
   <!-- footer section -->
 
   <th:block th:include="business/temp-list-home-product :: temp-list-home-product"/>
+  <th:block th:include="business/temp-list-cart-product :: temp-list-cart-product"/>
   <th:block th:include="business/temp-option :: temp-option"/>
   <th:block th:include="layout/modal/cart-modal :: cart-modal"/>
   <th:block th:replace="layout/script :: script"/>

@@ -40,6 +40,7 @@ public class CartServiceImpl implements CartService {
                 .setTitle(product.getTitle())
                 .setPhoto(product.getPhoto())
                 .setQuantity(cartProductParam.getQuantity())
+                .setPrice(product.getPrice())
                 .setTotalPrice(totalPrice)
                 .setSizeId(cartProductParam.getSizeId());
         cartList.add(newCartProduct);

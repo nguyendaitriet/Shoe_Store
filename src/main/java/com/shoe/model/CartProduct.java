@@ -20,6 +20,7 @@ public class CartProduct {
     private int sizeId;
     private String photo;
     private String title;
+    private BigDecimal price;
     private int quantity;
     private BigDecimal totalPrice;
 

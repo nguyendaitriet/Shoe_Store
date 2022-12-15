@@ -444,6 +444,7 @@ a:focus {
         z-index: 3;
 
         &:hover {
+          border: none;
           background-color: $primary1;
           color: $white;
         }

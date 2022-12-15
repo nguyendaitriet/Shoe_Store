@@ -45,11 +45,39 @@ page.element.sizeOption = $('.size-option');
 
 page.element.tempHomeProduct = $('#tempHomeProduct');
 page.element.tempOption = $('#tempOption');
+page.element.tempCartProduct = $('#tempCartProduct');
 
 page.element.cartLink = $('.cart-link');
 
 page.dialogs.element.modalCart = $('#mdCart');
-page.dialogs.element.tbCartProduct = $('#tb-cart-product')
+page.dialogs.element.tbCartProductBody = $('.tb-cart-product tbody');
+page.dialogs.commands.addCartProductToList = (cartProduct) => {
+    page.dialogs.element.tbCartProductBody.append($(tempCartProduct(cartProduct.productId, cartProduct.sizeId,
+        cartProduct.photo, cartProduct.title,cartProduct.price, cartProduct.quantity, cartProduct.totalPrice)));
+}
+page.dialogs.loadData.getAllCartProducts = () => {
+    $.ajax({
+        type: "GET",
+        url: page.urls.getAllCartProducts
+    })
+    .done((data) => {
+
+        $.each(data, (index, cartItem) => {
+            page.dialogs.commands.addCartProductToList(cartItem);
+
+            // $.each(productItem.sizeList, (index, item) => {
+            //     $(`.size-option-${productItem.id}`).append($(tempOption(item.id, item.sizeNumber)));
+            // })
+        });
+    })
+    .fail(() => {
+        // App.SweetAlert.showErrorAlert("Drug list not found!");
+        alert('Error');
+    })
+}
+page.dialogs.close.modalCart = () => {
+    $('.tb-cart-product tbody tr').remove();
+}
 
 page.loadData.getAllHomeProducts = () => {
     return $.ajax({
@@ -57,7 +85,6 @@ page.loadData.getAllHomeProducts = () => {
         url: page.urls.getAllHomeProducts
     })
         .done((data) => {
-            console.log(data);
 
             $.each(data, (index, productItem) => {
                 page.commands.addHomeProduct(productItem);
@@ -76,6 +103,7 @@ page.loadData.getAllHomeProducts = () => {
 
 let tempHomeProduct = $.validator.format($.trim(page.element.tempHomeProduct.val().toString()));
 let tempOption = $.validator.format($.trim(page.element.tempOption.val().toString()));
+let tempCartProduct = $.validator.format($.trim(page.element.tempCartProduct.val().toString()));
 
 page.commands.addHomeProduct = (homeProduct) => {
     page.element.productArea.append($(tempHomeProduct(homeProduct.id, homeProduct.title, homeProduct.photo, homeProduct.price)));
@@ -101,6 +129,8 @@ page.commands.handleMinusQuantity = () => {
 page.commands.handleCartLink = () => {
     page.element.cartLink.on('click', () => {
         page.dialogs.element.modalCart.modal('show');
+        page.dialogs.loadData.getAllCartProducts();
+
     })
 }
 
@@ -115,7 +145,6 @@ page.commands.handleAddToCartBtn = () => {
         cartProductParam.productId = id;
         cartProductParam.quantity = $(`#quantity-${id}`).val();
         cartProductParam.sizeId = $(`.size-option-${id}`).find(":selected").val();
-        console.log(cartProductParam);
         $.ajax({
             type: "POST",
             headers: {
@@ -126,18 +155,8 @@ page.commands.handleAddToCartBtn = () => {
             data: JSON.stringify(cartProductParam)
         })
         .done((data) => {
+            alert('Success');
 
-            $.ajax({
-                type: "GET",
-                url: page.urls.getAllCartProducts
-            })
-                .done((data) => {
-                    console.log(data);
-                })
-                .fail(() => {
-                    // App.SweetAlert.showErrorAlert("Drug list not found!");
-                    alert('Error');
-                })
         })
         .fail(() => {
             // App.SweetAlert.showErrorAlert("Drug list not found!");
@@ -152,5 +171,7 @@ page.initializeControlEvent = () => {
     page.commands.handleAddToCartBtn();
     page.commands.handlePlusQuantity();
     page.commands.handleMinusQuantity();
-
+    page.dialogs.element.modalCart.on("hidden.bs.modal", function () {
+        page.dialogs.close.modalCart();
+    });
 }
