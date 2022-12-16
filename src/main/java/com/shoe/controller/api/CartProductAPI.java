@@ -7,6 +7,10 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Map;
+
 @RestController
 @RequestMapping("/api/cart-product")
 public class CartProductAPI {
@@ -21,6 +25,12 @@ public class CartProductAPI {
     @PostMapping("/add")
     public ResponseEntity<?> addCartProductToList(@RequestBody CartProductParam cartProductParam) {
         cartService.addProduct(cartProductParam);
+        return new ResponseEntity<>(HttpStatus.OK);
+    }
+
+    @PutMapping("/update")
+    public ResponseEntity<?> updateCartProductList(@RequestBody Map<String, ArrayList<CartProductParam>> cartProductUpdateMap) {
+        cartService.updateProduct(cartProductUpdateMap.get("cartProductUpdateList"));
         return new ResponseEntity<>(HttpStatus.OK);
     }
 }

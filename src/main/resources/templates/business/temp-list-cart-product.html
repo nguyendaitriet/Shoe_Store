@@ -2,31 +2,31 @@
 
 <th:block th:fragment="temp-list-cart-product">
     <textarea id="tempCartProduct" style="display:none">
-        <tr>
-                <td class="w-25">
-                    <img src={2} class="img-fluid img-thumbnail" alt="No image found">
-                </td>
-                <td>{3}</td>
-                <td>{4}$</td>
-                <td>
-                    <div class="quantity buttons_added">
-                        <input type="button" value="-" class="minus">
-                        <input id="quantityCart" type="number" step="1" min="1" max="" name="quantity" value={5}
-                               class="input-text qty text" size="4" pattern="" inputmode="">
-                        <input type="button" value="+" class="plus">
-                    </div>
-                </td>
-                <td>
-                    <select class="form-control size-option-cart-product-{0}">
-                        <option disabled>Size</option>
-                    </select>
-                </td>
-                <td>{6}$</td>
-                <td>
-                    <a href="#" class="btn btn-danger btn-sm">
-                        <i class="fa fa-times"></i>
-                    </a>
-                </td>
+        <tr id="tr-{0}" data-product={7}>
+            <td class="w-25">
+                <img src={2} class="img-fluid img-thumbnail" alt="No image found">
+            </td>
+            <td>{3}</td>
+            <td>{4}$</td>
+            <td>
+                <div class="quantity buttons_added">
+                    <input type="button" value="-" class="minus">
+                    <input id="quantityCart" type="number" step="1" min="1" max="" name="quantity" value={5}
+                           class="input-text qty text" size="4" pattern="" inputmode="">
+                    <input type="button" value="+" class="plus">
+                </div>
+            </td>
+            <td>
+                <select class="form-control size-option-cart-product-{0}">
+                    <option disabled>Size</option>
+                </select>
+            </td>
+            <td>{6}$</td>
+            <td>
+                <a href="#" class="btn btn-danger btn-sm">
+                    <i class="fa fa-times"></i>
+                </a>
+            </td>
         </tr>
 
     </textarea>

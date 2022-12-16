@@ -25,6 +25,7 @@ public class CartProduct {
     private int quantity;
     private BigDecimal totalPrice;
     private List<Size> sizeList;
+    private int productId;
 
     @Override
     public boolean equals(Object o) {

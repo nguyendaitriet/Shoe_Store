@@ -1,37 +1,31 @@
 package com.shoe.service.impl;
 
-import com.shoe.dao.ProductDAO;
-import com.shoe.dao.ProductItemDAO;
 import com.shoe.dto.cart.CartProductParam;
-import com.shoe.entity.Product;
-import com.shoe.entity.Size;
+import com.shoe.mapper.CartMapper;
 import com.shoe.model.CartProduct;
 import com.shoe.service.CartService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.web.context.annotation.SessionScope;
 
-import java.math.BigDecimal;
+
 import java.util.*;
 
 @Service
 @SessionScope
 public class CartServiceImpl implements CartService {
 
-    private final ArrayList<CartProduct> cartList;
+    private ArrayList<CartProduct> cartList;
 
     @Autowired
-    ProductDAO productDAO;
-
-    @Autowired
-    ProductItemDAO productItemDAO;
+    private CartMapper cartMapper;
 
     public CartServiceImpl(ArrayList<CartProduct> cartList) {
         this.cartList = cartList;
     }
 
     @Override
-    public List<CartProduct> getAllCartProducts() {
+    public ArrayList<CartProduct> getAllCartProducts() {
         modifyCartProductList(cartList);
         cartList.sort(Comparator.comparing(CartProduct::getTitle));
         return cartList;
@@ -39,24 +33,13 @@ public class CartServiceImpl implements CartService {
 
     @Override
     public void addProduct(CartProductParam cartProductParam) {
+        cartList.add(cartMapper.toCartProduct(cartProductParam));
+    }
 
-        Product product = productDAO.findById(cartProductParam.getProductId()).get();
-        BigDecimal totalPrice = product.getPrice().multiply(new BigDecimal(cartProductParam.getQuantity()));
-        List<Size> sizeList = productDAO.findAllSizeById(product.getId());
-        int productItemId = productItemDAO.findProductItemId(cartProductParam.getProductId(), cartProductParam.getSizeId());
-
-        CartProduct newCartProduct = new CartProduct()
-                .setProductItemId(productItemId)
-                .setTitle(product.getTitle())
-                .setPhoto(product.getPhoto())
-                .setQuantity(cartProductParam.getQuantity())
-                .setPrice(product.getPrice())
-                .setTotalPrice(totalPrice)
-                .setSizeId(cartProductParam.getSizeId())
-                .setSizeList(sizeList);
-
-        cartList.add(newCartProduct);
-
+    @Override
+    public void updateProduct(ArrayList<CartProductParam> cartProductUpdateList) {
+        List<CartProduct> newCartList = cartProductUpdateList.stream().map((item) -> cartMapper.toCartProduct(item)).toList();
+        cartList = new ArrayList<>(newCartList) ;
     }
 
     //Interface Comparable: int compareTo(Object o);

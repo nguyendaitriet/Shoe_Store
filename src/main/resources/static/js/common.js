@@ -133,3 +133,11 @@ class CommonApp {
         }, timeout);
     }
 }
+
+class CartProductParam {
+    constructor(productId, quantity, sizeId) {
+        this.productId = productId;
+        this.quantity = quantity;
+        this.sizeId = sizeId;
+    }
+}
