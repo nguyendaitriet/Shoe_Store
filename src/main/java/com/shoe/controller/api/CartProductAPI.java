@@ -8,7 +8,6 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.ArrayList;
-import java.util.List;
 import java.util.Map;
 
 @RestController
@@ -31,6 +30,12 @@ public class CartProductAPI {
     @PutMapping("/update")
     public ResponseEntity<?> updateCartProductList(@RequestBody Map<String, ArrayList<CartProductParam>> cartProductUpdateMap) {
         cartService.updateProduct(cartProductUpdateMap.get("cartProductUpdateList"));
+        return new ResponseEntity<>(HttpStatus.OK);
+    }
+
+    @DeleteMapping("/remove/{id}")
+    public ResponseEntity<?> removeCartProductFromList(@PathVariable("id") int productItemId) {
+        cartService.removeProduct(productItemId);
         return new ResponseEntity<>(HttpStatus.OK);
     }
 }

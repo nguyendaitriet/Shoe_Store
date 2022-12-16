@@ -61,7 +61,7 @@ public class CartServiceImpl implements CartService {
     }
 
     @Override
-    public void removeProduct(int id) {
-
+    public void removeProduct(int productItemId) {
+        cartList.remove(new CartProduct(productItemId));
     }
 }

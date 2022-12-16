@@ -40,4 +40,7 @@ public class CartProduct {
         return Objects.hash(productItemId);
     }
 
+    public CartProduct(int productItemId) {
+        this.productItemId = productItemId;
+    }
 }

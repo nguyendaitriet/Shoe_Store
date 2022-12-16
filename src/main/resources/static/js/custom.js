@@ -18,7 +18,8 @@ let page = {
         getAllHomeProducts: CommonApp.BASE_URL_PRODUCT,
         getAllCartProducts: CommonApp.BASE_URL_CART_PRODUCT,
         addCartProductToList: CommonApp.BASE_URL_CART_PRODUCT + "/add",
-        updateCartProductList: CommonApp.BASE_URL_CART_PRODUCT + "/update"
+        updateCartProductList: CommonApp.BASE_URL_CART_PRODUCT + "/update",
+        removeCartProductFromList: CommonApp.BASE_URL_CART_PRODUCT + "/remove",
     },
     element: {},
     loadData: {},
@@ -84,6 +85,22 @@ page.dialogs.commands.handleBtnUpdateCart = () => {
         .fail((jqXHR) => {
             CommonApp.handleFailedTasks(jqXHR);
         })
+    })
+}
+page.dialogs.commands.handleRemoveCartProduct = () => {
+    $(document).on("click", ".btn-remove-cart-product", function () {
+        let productItemId = $(this).data('id');
+        $.ajax({
+            type: "DELETE",
+            url: page.urls.removeCartProductFromList + '/' + productItemId
+        })
+            .done(() => {
+                $(`#tr-${productItemId}`).remove();
+                CommonApp.SweetAlert.showSuccessAlert('Remove product successfully!')
+            })
+            .fail((jqXHR) => {
+                CommonApp.handleFailedTasks(jqXHR);
+            })
     })
 }
 page.dialogs.loadData.getAllCartProducts = () => {
@@ -207,5 +224,6 @@ page.initializeControlEvent = () => {
     page.dialogs.element.modalCart.on("hidden.bs.modal", function () {
         page.dialogs.close.modalCart();
     });
+    page.dialogs.commands.handleRemoveCartProduct();
     page.dialogs.commands.handleBtnUpdateCart();
 }
