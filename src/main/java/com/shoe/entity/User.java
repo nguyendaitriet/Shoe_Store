@@ -27,7 +27,7 @@ public class User {
     @Column(name = "fullName", length = 100, nullable = false)
     private String fullName;
 
-    @Column(name = "phoneNumber", length = 50, nullable = false)
+    @Column(name = "phoneNumber", length = 50)
     private String phoneNumber;
 
     @Column(name = "address", length = 500)
@@ -35,8 +35,4 @@ public class User {
 
     @Column(name = "registeredAt")
     private Instant registeredAt;
-
-    @Column(name = "role", length = 50, nullable = false)
-    private String role;
-
 }

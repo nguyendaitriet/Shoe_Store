@@ -1,0 +1,106 @@
+:root {
+    --color-facebook: #3b5998;
+    --color-google: #ea4335;
+    --color-twitter: #1da1f2;
+
+    --style-1-color: #009688;
+    --style-2-color: #009688;
+    --style-3-color: #009688;
+}
+
+.modal-style-3 .modal-login {
+    width: 350px;
+    font-size: 13px;
+}
+
+.modal-style-3 .modal-login .modal-header {
+    border-bottom: none;
+    position: relative;
+    justify-content: center;
+}
+
+.modal-style-3 .modal-login h4 {
+    text-align: center;
+    font-size: 18px;
+    width: 100%;
+}
+
+.modal-style-3 .modal-header .close {
+    position: absolute;
+    right: 10px;
+}
+
+.modal-style-3 .close:focus,
+.modal-style-3 .close:active {
+    outline: none !important;
+    box-shadow: none;
+}
+
+.modal-style-3 .modal-login a {
+    text-decoration: none !important;
+}
+
+.modal-style-3 .modal-login form {
+    width: 280px;
+    margin: 0 auto;
+}
+
+.modal-style-3 .modal-login .form-group {
+    position: relative;
+
+}
+
+.modal-style-3 .modal-login .form-control {
+    height: auto;
+    min-height: 35px;
+    border: 1px solid #eaeaea;
+    padding: 0 10px;
+    background-color: #fff;
+    font-size: 13px;
+    border-radius: 4px;
+    -webkit-border-radius: 4px;
+    -moz-border-radius: 4px;
+    padding-left: 40px;
+    border-radius: 25px;
+}
+
+.modal-style-3 .modal-login .form-control~i {
+    position: absolute;
+    top: 12px;
+    left: 15px;
+    color: var(--style-3-color);
+}
+
+.modal-style-3 .btn-signin {
+    border-radius: 25px;
+    width: 100%;
+    text-transform: uppercase;
+    letter-spacing: 1.5px;
+    background-color: var(--style-3-color);
+    border: 1px solid var(--style-3-color);
+}
+
+.dark.modal-style-3 .modal-content {
+    background: #0b0b1f;
+    color: #fff;
+}
+
+.dark.modal-style-3 .close,
+.modal-style-1.dark .modal-login h4 {
+    color: #fff;
+}
+
+.dark .text-danger {
+    color: #777 !important;
+}
+
+@media only screen and (max-width: 360px) {
+    .modal-style-3 .modal-login {
+        width: 100%;
+        margin: 5px;
+    }
+
+    .modal-style-3 .modal-login form {
+        width: 100%;
+    }
+}

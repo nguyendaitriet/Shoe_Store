@@ -35,7 +35,7 @@
                 <i class="fa fa-search" aria-hidden="true"></i>
               </button>
             </from>
-            <div class="user_option_box">
+            <div class="user_option_box" hidden>
               <a href="" class="account-link">
                 <i class="fa fa-user" aria-hidden="true"></i>
                 <span>
@@ -49,6 +49,22 @@
                 </span>
               </a>
             </div>
+
+            <div class="user_option_box">
+              <a href="javascript:" class="login-link">
+                <i class="fa fa-pencil-square-o" aria-hidden="true"></i>
+                <span>
+                  Login
+                </span>
+              </a>
+              <a href="javascript:" class="cart-link">
+                <i class="fa fa-shopping-cart" aria-hidden="true"></i>
+                <span>
+                  Cart
+                </span>
+              </a>
+            </div>
+
           </div>
 
         </div>
@@ -553,6 +569,7 @@
   <th:block th:include="business/temp-list-cart-product :: temp-list-cart-product"/>
   <th:block th:include="business/temp-option :: temp-option"/>
   <th:block th:include="layout/modal/cart-modal :: cart-modal"/>
+  <th:block th:include="layout/modal/login-modal :: login-modal"/>
   <th:block th:replace="layout/script :: script"/>
 
 </body>

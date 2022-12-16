@@ -42,6 +42,7 @@ page.element.tempOption = $('#tempOption');
 page.element.tempCartProduct = $('#tempCartProduct');
 
 page.element.cartLink = $('.cart-link');
+page.element.loginLink = $('.login-link');
 
 page.dialogs.element.modalCart = $('#mdCart');
 page.dialogs.element.grandTotalPrice = $('.grand-total-price');
@@ -96,7 +97,8 @@ page.dialogs.commands.handleRemoveCartProduct = () => {
         })
             .done(() => {
                 $(`#tr-${productItemId}`).remove();
-                CommonApp.SweetAlert.showSuccessAlert('Remove product successfully!')
+                page.dialogs.element.grandTotalPrice.val('0');
+                CommonApp.SweetAlert.showSuccessAlert('Remove product successfully!');
             })
             .fail((jqXHR) => {
                 CommonApp.handleFailedTasks(jqXHR);
@@ -133,6 +135,10 @@ page.dialogs.loadData.getAllCartProducts = () => {
 page.dialogs.close.modalCart = () => {
     $('.tb-cart-product tbody tr').remove();
 }
+
+page.dialogs.element.modalLogin = $('#md-login');
+
+page.dialogs.element.modalRegister = $('#md-register');
 
 page.loadData.getAllHomeProducts = () => {
     return $.ajax({
@@ -184,6 +190,12 @@ page.commands.handleCartLink = () => {
     page.element.cartLink.on('click', () => {
         page.dialogs.element.modalCart.modal('show');
         page.dialogs.loadData.getAllCartProducts();
+    })
+}
+
+page.commands.handleCartLink = () => {
+    page.element.loginLink.on('click', () => {
+        page.dialogs.element.modalLogin.modal('show');
     })
 }
 
