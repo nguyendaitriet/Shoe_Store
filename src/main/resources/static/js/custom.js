@@ -43,6 +43,7 @@ page.element.sizeOption = $('.size-option');
 page.element.tempHomeProduct = $('#tempHomeProduct');
 page.element.tempOption = $('#tempOption');
 page.element.tempCartProduct = $('#tempCartProduct');
+page.element.currentUsername = $('#currentUsername');
 
 page.element.cartLink = $('.cart-link');
 page.element.loginLink = $('.login-link');
@@ -213,7 +214,8 @@ page.dialogs.commands.login = () => {
         data: JSON.stringify(loginParam)
     })
         .done((jqXHR) => {
-            CommonApp.IziToast.showSuccessAlert(jqXHR);
+            CommonApp.IziToast.showSuccessAlert('Login successfully!');
+            page.element.currentUsername.text(`Hello, ${jqXHR}`);
             page.element.loginLink.attr('hidden', true);
             page.element.accountLink.attr('hidden', false);
             page.dialogs.element.modalLogin.modal('hide');

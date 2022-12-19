@@ -43,7 +43,7 @@ public class AuthAPI {
                 loginParam.getUsername(), loginParam.getPassword()));
 
         SecurityContextHolder.getContext().setAuthentication(authentication);
-        return new ResponseEntity<>("Login successfully!", HttpStatus.OK);
+        return new ResponseEntity<>(authentication.getName(), HttpStatus.OK);
     }
 
     @PostMapping("/signUp")
