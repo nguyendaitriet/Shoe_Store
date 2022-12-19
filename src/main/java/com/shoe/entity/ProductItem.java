@@ -35,6 +35,9 @@ public class ProductItem {
     @JoinColumn(name = "productId", nullable = false)
     private Product product;
 
+    public ProductItem(int id) {
+        this.id = id;
+    }
 }
 
 
