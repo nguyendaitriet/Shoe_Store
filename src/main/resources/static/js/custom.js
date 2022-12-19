@@ -52,6 +52,7 @@ page.dialogs.element.modalCart = $('#mdCart');
 page.dialogs.element.grandTotalPrice = $('.grand-total-price');
 page.dialogs.element.tbCartProductBody = $('.tb-cart-product tbody');
 page.dialogs.element.btnUpdateCart = $('#btn-update-cart');
+page.dialogs.element.formOrderInfo = $('#frm-order-info');
 page.dialogs.commands.addCartProductToList = (cartProduct) => {
     page.dialogs.element.tbCartProductBody.append($(tempCartProduct(cartProduct.productItemId, cartProduct.sizeId,
         cartProduct.photo, cartProduct.title, cartProduct.price, cartProduct.quantity, cartProduct.totalPrice, cartProduct.productId)));
@@ -82,14 +83,14 @@ page.dialogs.commands.handleBtnUpdateCart = () => {
             url: page.urls.updateCartProductList,
             data: JSON.stringify({cartProductUpdateList})
         })
-        .done(() => {
-            page.dialogs.element.tbCartProductBody.html('');
-            page.dialogs.loadData.getAllCartProducts();
-            CommonApp.SweetAlert.showSuccessAlert('Update cart successfully!')
-        })
-        .fail((jqXHR) => {
-            CommonApp.handleFailedTasks(jqXHR);
-        })
+            .done(() => {
+                page.dialogs.element.tbCartProductBody.html('');
+                page.dialogs.loadData.getAllCartProducts();
+                CommonApp.SweetAlert.showSuccessAlert('Update cart successfully!')
+            })
+            .fail((jqXHR) => {
+                CommonApp.handleFailedTasks(jqXHR);
+            })
     })
 }
 page.dialogs.commands.handleBtnRemoveCartProduct = () => {
@@ -100,8 +101,8 @@ page.dialogs.commands.handleBtnRemoveCartProduct = () => {
             url: page.urls.removeCartProductFromList + '/' + productItemId
         })
             .done(() => {
-                $(`#tr-${productItemId}`).remove();
-                page.dialogs.element.grandTotalPrice.val('0');
+                page.dialogs.element.tbCartProductBody.html('');
+                page.dialogs.loadData.getAllCartProducts();
                 CommonApp.SweetAlert.showSuccessAlert('Remove product successfully!');
             })
             .fail((jqXHR) => {
@@ -114,27 +115,27 @@ page.dialogs.loadData.getAllCartProducts = () => {
         type: "GET",
         url: page.urls.getAllCartProducts
     })
-    .done((data) => {
-        let grandTotalPrice = 0;
+        .done((data) => {
+            let grandTotalPrice = 0;
 
-        $.each(data, (index, cartItem) => {
-            page.dialogs.commands.addCartProductToList(cartItem);
-            grandTotalPrice += cartItem.totalPrice;
+            $.each(data, (index, cartItem) => {
+                page.dialogs.commands.addCartProductToList(cartItem);
+                grandTotalPrice += cartItem.totalPrice;
 
-            $.when(
-                $.each(cartItem.sizeList, (index, item) => {
-                    $(`.size-option-cart-product-${cartItem.productItemId}`).append($(tempOption(item.id, item.sizeNumber)));
+                $.when(
+                    $.each(cartItem.sizeList, (index, item) => {
+                        $(`.size-option-cart-product-${cartItem.productItemId}`).append($(tempOption(item.id, item.sizeNumber)));
+                    })
+                ).done(() => {
+                    $(`.size-option-cart-product-${cartItem.productItemId}`).val(`${cartItem.sizeId}`).change();
                 })
-            ).done(() => {
-                $(`.size-option-cart-product-${cartItem.productItemId}`).val(`${cartItem.sizeId}`).change();
-            })
-        });
-
-        page.dialogs.element.grandTotalPrice.text(`${grandTotalPrice}$`);
-    })
-    .fail((jqXHR) => {
-        CommonApp.handleFailedTasks(jqXHR);
-    })
+            });
+            let roundGrandTotalPrice = Math.round((grandTotalPrice + Number.EPSILON) * 100) / 100;
+            page.dialogs.element.grandTotalPrice.text(`${roundGrandTotalPrice}$`);
+        })
+        .fail((jqXHR) => {
+            CommonApp.handleFailedTasks(jqXHR);
+        })
 }
 page.dialogs.close.modalCart = () => {
     $('.tb-cart-product tbody tr').remove();
@@ -146,39 +147,39 @@ page.dialogs.element.formLogin = $('#frm-login');
 page.dialogs.element.username = $('#username');
 page.dialogs.element.password = $('#password');
 page.dialogs.element.btnLogin = $('#btn-login');
-page.dialogs.commands.handleBtnLogin = () => {
-    page.dialogs.element.btnLogin.on('click', () => {
-        let loginParam = {
-            username: {},
-            password: {}
-        };
-        loginParam.username = page.dialogs.element.username.val().trim();
-        loginParam.password = page.dialogs.element.password.val();
+page.dialogs.commands.login = () => {
+    let loginParam = {
+        username: {},
+        password: {}
+    };
+    loginParam.username = page.dialogs.element.username.val().trim();
+    loginParam.password = page.dialogs.element.password.val();
 
-        $.ajax({
-            type: "POST",
-            headers: {
-                'Accept': 'application/json',
-                'Content-Type': 'application/json'
-            },
-            dataType: 'text',
-            url: page.urls.login,
-            data: JSON.stringify(loginParam)
-        })
-            .done((jqXHR) => {
-                CommonApp.IziToast.showSuccessAlert(jqXHR);
-                page.element.loginLink.attr('hidden', true);
-                page.element.accountLink.attr('hidden', false);
-                page.dialogs.element.modalLogin.modal('hide');
-
-            })
-            .fail((jqXHR) => {
-                CommonApp.handleFailedTasks(jqXHR);
-            })
+    $.ajax({
+        type: "POST",
+        headers: {
+            'Accept': 'application/json',
+            'Content-Type': 'application/json'
+        },
+        dataType: 'text',
+        url: page.urls.login,
+        data: JSON.stringify(loginParam)
     })
+        .done((jqXHR) => {
+            CommonApp.IziToast.showSuccessAlert(jqXHR);
+            page.element.loginLink.attr('hidden', true);
+            page.element.accountLink.attr('hidden', false);
+            page.dialogs.element.modalLogin.modal('hide');
+
+        })
+        .fail((jqXHR) => {
+            CommonApp.handleFailedTasks(jqXHR);
+        })
 }
 page.dialogs.close.modalLogin = () => {
     page.dialogs.element.formLogin[0].reset();
+    page.dialogs.element.formLogin.validate().resetForm();
+    page.dialogs.element.formLogin.find("input.error").removeClass("error");
     $('body').removeClass('modal-open');
     $('.modal-backdrop').remove();
 }
@@ -190,42 +191,42 @@ page.dialogs.element.usernameCre = $('#username-create');
 page.dialogs.element.passwordCre = $('#password-create');
 page.dialogs.element.fullNameCre = $('#full-name-create');
 page.dialogs.element.btnRegister = $('#btn-register');
-page.dialogs.commands.handleBtnRegister = () => {
-    page.dialogs.element.btnRegister.on('click', () => {
-        let signUpParam = {
-            fullName: {},
-            username: {},
-            password: {}
-        };
+page.dialogs.commands.register = () => {
+    let signUpParam = {
+        fullName: {},
+        username: {},
+        password: {}
+    };
 
-        signUpParam.fullName = page.dialogs.element.fullNameCre.val().trim();
-        signUpParam.username = page.dialogs.element.usernameCre.val().trim();
-        signUpParam.password = page.dialogs.element.passwordCre.val();
+    signUpParam.fullName = page.dialogs.element.fullNameCre.val().trim();
+    signUpParam.username = page.dialogs.element.usernameCre.val().trim();
+    signUpParam.password = page.dialogs.element.passwordCre.val();
 
-        $.ajax({
-            type: "POST",
-            headers: {
-                'Accept': 'application/json',
-                'Content-Type': 'application/json'
-            },
-            dataType: 'text',
-            url: page.urls.register,
-            data: JSON.stringify(signUpParam)
-        })
-            .done((jqXHR) => {
-                CommonApp.IziToast.showSuccessAlert(jqXHR);
-                page.dialogs.element.username.val(signUpParam.username);
-                page.dialogs.element.password.val(signUpParam.password);
-                page.dialogs.element.modalRegister.modal('hide');
-                page.dialogs.element.modalLogin.modal('show');
-            })
-            .fail((jqXHR) => {
-                CommonApp.handleFailedTasks(jqXHR);
-            })
+    $.ajax({
+        type: "POST",
+        headers: {
+            'Accept': 'application/json',
+            'Content-Type': 'application/json'
+        },
+        dataType: 'text',
+        url: page.urls.register,
+        data: JSON.stringify(signUpParam)
     })
+        .done((jqXHR) => {
+            CommonApp.IziToast.showSuccessAlert(jqXHR);
+            page.dialogs.element.username.val(signUpParam.username);
+            page.dialogs.element.password.val(signUpParam.password);
+            page.dialogs.element.modalRegister.modal('hide');
+            page.dialogs.element.modalLogin.modal('show');
+        })
+        .fail((jqXHR) => {
+            CommonApp.handleFailedTasks(jqXHR);
+        })
 }
 page.dialogs.close.modalRegister = () => {
     page.dialogs.element.formRegister[0].reset();
+    page.dialogs.element.formRegister.validate().resetForm();
+    page.dialogs.element.formRegister.find("input.error").removeClass("error");
     $('body').removeClass('modal-open');
     $('.modal-backdrop').remove();
 }
@@ -307,12 +308,12 @@ page.commands.handleAddToCartBtn = () => {
             url: page.urls.addCartProductToList,
             data: JSON.stringify(cartProductParam)
         })
-        .done(() => {
-            CommonApp.SweetAlert.showSuccessAlert('Add to cart successfully!')
-        })
-        .fail((jqXHR) => {
-            CommonApp.handleFailedTasks(jqXHR);
-        })
+            .done(() => {
+                CommonApp.SweetAlert.showSuccessAlert('Add to cart successfully!')
+            })
+            .fail((jqXHR) => {
+                CommonApp.handleFailedTasks(jqXHR);
+            })
 
         $(`#quantity-${id}`).val(1);
         $(`.size-option-${id}`).prop("selectedIndex", 1).change();
@@ -326,12 +327,16 @@ page.initializeControlEvent = () => {
     page.commands.handlePlusQuantity();
     page.commands.handleMinusQuantity();
 
-    page.dialogs.commands.handleBtnLogin();
+    page.dialogs.element.btnLogin.on('click', () => {
+        page.dialogs.element.formLogin.submit();
+    })
     page.dialogs.element.modalLogin.on("hidden.bs.modal", function () {
         page.dialogs.close.modalLogin();
     });
 
-    page.dialogs.commands.handleBtnRegister();
+    page.dialogs.element.btnRegister.on('click', () => {
+        page.dialogs.element.formRegister.submit();
+    })
     page.dialogs.element.modalRegister.on("hidden.bs.modal", function () {
         page.dialogs.close.modalRegister();
     });
