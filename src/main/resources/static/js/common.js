@@ -3,6 +3,7 @@ class CommonApp {
     static API_ENDPOINT = this.DOMAIN + "/api";
     static BASE_URL_PRODUCT = this.API_ENDPOINT + "/product";
     static BASE_URL_CART_PRODUCT = this.API_ENDPOINT + "/cart-product";
+    static BASE_URL_AUTH = this.API_ENDPOINT + "/auth";
 
     static ERROR_400 = "Bad request. Check information again!";
     static ERROR_401 = "Wrong username or password. Try again!";
@@ -106,11 +107,7 @@ class CommonApp {
                 this.IziToast.showErrorAlert(this.ERROR_400);
                 break;
             case 401:
-                this.SweetAlert.showTimeOut(
-                    this.ERROR_401,
-                    this.WARNING_REDIRECT,
-                    4000,
-                    this.redirectToLogin(4000));
+                this.IziToast.showErrorAlert(this.ERROR_401);
                 break;
             case 403:
                 this.SweetAlert.showErrorAlert(this.ERROR_403);
@@ -119,7 +116,7 @@ class CommonApp {
                 this.IziToast.showErrorAlert(this.ERROR_404);
                 break;
             case 409:
-                this.IziToast.showErrorAlert(jqXHR.responseJSON.message);
+                this.IziToast.showErrorAlert(jqXHR);
                 break;
             default:
                 this.IziToast.showErrorAlert(this.ERROR_500);

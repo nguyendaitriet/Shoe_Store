@@ -1,10 +1,11 @@
 package com.shoe.entity;
 
 import lombok.*;
+import lombok.experimental.Accessors;
 
 import javax.persistence.*;
 import java.time.Instant;
-import java.util.List;
+import java.util.Set;
 
 @Entity
 @Table(name = "user")
@@ -12,6 +13,7 @@ import java.util.List;
 @Getter
 @NoArgsConstructor
 @AllArgsConstructor
+@Accessors(chain = true)
 public class User {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -35,4 +37,10 @@ public class User {
 
     @Column(name = "registeredAt")
     private Instant registeredAt;
+
+    @ManyToMany(fetch = FetchType.EAGER)
+    @JoinTable(name = "user_roles",
+            joinColumns = @JoinColumn(name = "user_id", referencedColumnName = "id"),
+            inverseJoinColumns = @JoinColumn(name = "role_id", referencedColumnName = "id"))
+    private Set<Role> roles;
 }

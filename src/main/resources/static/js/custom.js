@@ -15,6 +15,8 @@ $(function () {
 
 let page = {
     urls: {
+        login: CommonApp.BASE_URL_AUTH + "/signIn",
+        register: CommonApp.BASE_URL_AUTH + "/signUp",
         getAllHomeProducts: CommonApp.BASE_URL_PRODUCT,
         getAllCartProducts: CommonApp.BASE_URL_CART_PRODUCT,
         addCartProductToList: CommonApp.BASE_URL_CART_PRODUCT + "/add",
@@ -43,7 +45,9 @@ page.element.tempCartProduct = $('#tempCartProduct');
 
 page.element.cartLink = $('.cart-link');
 page.element.loginLink = $('.login-link');
+page.element.accountLink = $('.account-link');
 
+//Cart modal
 page.dialogs.element.modalCart = $('#mdCart');
 page.dialogs.element.grandTotalPrice = $('.grand-total-price');
 page.dialogs.element.tbCartProductBody = $('.tb-cart-product tbody');
@@ -73,7 +77,7 @@ page.dialogs.commands.handleBtnUpdateCart = () => {
             type: "PUT",
             headers: {
                 'Accept': 'application/json',
-                'Content-Type': 'application/json'
+                'Content-Type': 'application/json',
             },
             url: page.urls.updateCartProductList,
             data: JSON.stringify({cartProductUpdateList})
@@ -88,7 +92,7 @@ page.dialogs.commands.handleBtnUpdateCart = () => {
         })
     })
 }
-page.dialogs.commands.handleRemoveCartProduct = () => {
+page.dialogs.commands.handleBtnRemoveCartProduct = () => {
     $(document).on("click", ".btn-remove-cart-product", function () {
         let productItemId = $(this).data('id');
         $.ajax({
@@ -136,9 +140,96 @@ page.dialogs.close.modalCart = () => {
     $('.tb-cart-product tbody tr').remove();
 }
 
+//Login modal
 page.dialogs.element.modalLogin = $('#md-login');
+page.dialogs.element.formLogin = $('#frm-login');
+page.dialogs.element.username = $('#username');
+page.dialogs.element.password = $('#password');
+page.dialogs.element.btnLogin = $('#btn-login');
+page.dialogs.commands.handleBtnLogin = () => {
+    page.dialogs.element.btnLogin.on('click', () => {
+        let loginParam = {
+            username: {},
+            password: {}
+        };
+        loginParam.username = page.dialogs.element.username.val().trim();
+        loginParam.password = page.dialogs.element.password.val();
 
+        $.ajax({
+            type: "POST",
+            headers: {
+                'Accept': 'application/json',
+                'Content-Type': 'application/json'
+            },
+            dataType: 'text',
+            url: page.urls.login,
+            data: JSON.stringify(loginParam)
+        })
+            .done((jqXHR) => {
+                CommonApp.IziToast.showSuccessAlert(jqXHR);
+                page.element.loginLink.attr('hidden', true);
+                page.element.accountLink.attr('hidden', false);
+                page.dialogs.element.modalLogin.modal('hide');
+
+            })
+            .fail((jqXHR) => {
+                CommonApp.handleFailedTasks(jqXHR);
+            })
+    })
+}
+page.dialogs.close.modalLogin = () => {
+    page.dialogs.element.formLogin[0].reset();
+    $('body').removeClass('modal-open');
+    $('.modal-backdrop').remove();
+}
+
+//Register modal
 page.dialogs.element.modalRegister = $('#md-register');
+page.dialogs.element.formRegister = $('#frm-register');
+page.dialogs.element.usernameCre = $('#username-create');
+page.dialogs.element.passwordCre = $('#password-create');
+page.dialogs.element.fullNameCre = $('#full-name-create');
+page.dialogs.element.btnRegister = $('#btn-register');
+page.dialogs.commands.handleBtnRegister = () => {
+    page.dialogs.element.btnRegister.on('click', () => {
+        let signUpParam = {
+            fullName: {},
+            username: {},
+            password: {}
+        };
+
+        signUpParam.fullName = page.dialogs.element.fullNameCre.val().trim();
+        signUpParam.username = page.dialogs.element.usernameCre.val().trim();
+        signUpParam.password = page.dialogs.element.passwordCre.val();
+
+        $.ajax({
+            type: "POST",
+            headers: {
+                'Accept': 'application/json',
+                'Content-Type': 'application/json'
+            },
+            dataType: 'text',
+            url: page.urls.register,
+            data: JSON.stringify(signUpParam)
+        })
+            .done((jqXHR) => {
+                CommonApp.IziToast.showSuccessAlert(jqXHR);
+                page.dialogs.element.username.val(signUpParam.username);
+                page.dialogs.element.password.val(signUpParam.password);
+                page.dialogs.element.modalRegister.modal('hide');
+                page.dialogs.element.modalLogin.modal('show');
+            })
+            .fail((jqXHR) => {
+                CommonApp.handleFailedTasks(jqXHR);
+            })
+    })
+}
+page.dialogs.close.modalRegister = () => {
+    page.dialogs.element.formRegister[0].reset();
+    $('body').removeClass('modal-open');
+    $('.modal-backdrop').remove();
+}
+
 
 page.loadData.getAllHomeProducts = () => {
     return $.ajax({
@@ -193,7 +284,7 @@ page.commands.handleCartLink = () => {
     })
 }
 
-page.commands.handleCartLink = () => {
+page.commands.handleLoginLink = () => {
     page.element.loginLink.on('click', () => {
         page.dialogs.element.modalLogin.modal('show');
     })
@@ -230,12 +321,25 @@ page.commands.handleAddToCartBtn = () => {
 
 page.initializeControlEvent = () => {
     page.commands.handleCartLink();
+    page.commands.handleLoginLink();
     page.commands.handleAddToCartBtn();
     page.commands.handlePlusQuantity();
     page.commands.handleMinusQuantity();
+
+    page.dialogs.commands.handleBtnLogin();
+    page.dialogs.element.modalLogin.on("hidden.bs.modal", function () {
+        page.dialogs.close.modalLogin();
+    });
+
+    page.dialogs.commands.handleBtnRegister();
+    page.dialogs.element.modalRegister.on("hidden.bs.modal", function () {
+        page.dialogs.close.modalRegister();
+    });
+
+    page.dialogs.commands.handleBtnRemoveCartProduct();
+    page.dialogs.commands.handleBtnUpdateCart();
     page.dialogs.element.modalCart.on("hidden.bs.modal", function () {
         page.dialogs.close.modalCart();
     });
-    page.dialogs.commands.handleRemoveCartProduct();
-    page.dialogs.commands.handleBtnUpdateCart();
+
 }

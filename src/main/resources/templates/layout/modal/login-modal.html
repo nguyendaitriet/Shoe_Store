@@ -1,9 +1,8 @@
 <html lang="en" xmlns:th="http://www.thymeleaf.org">
-<head>
-</head>
+
 <th:block th:fragment="login-modal">
 
-    <div id="md-login" class="modal-style-3 dark modal fade">
+    <div id="md-login" class="modal-style-3 dark modal fade" data-keyboard="true" tabindex="-1">
         <div class="modal-dialog modal-login">
             <div class="modal-content pt-3">
                 <div class="modal-header p-0">
@@ -11,7 +10,7 @@
                     <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
                 </div>
                 <div class="modal-body">
-                    <form id="frm-login" action="/login" method="post">
+                    <form id="frm-login">
                         <div class="form-group">
                             <input type="email" id="username" class="form-control"
                                    placeholder="Enter email address" required
@@ -24,7 +23,7 @@
                             <i class="fa fa-lock"></i>
                         </div>
                         <div class="form-group text-center mt-3">
-                            <button id="btn-login" type="submit" class="btn btn-primary btn-signin">Login</button>
+                            <button id="btn-login" type="button" class="btn btn-primary btn-signin">Login</button>
                         </div>
                     </form>
                 </div>
@@ -35,7 +34,7 @@
         </div>
     </div>
 
-    <div id="md-register" class="modal-style-3 dark modal fade">
+    <div id="md-register" class="modal-style-3 dark modal fade" data-keyboard="true" tabindex="-1">
         <div class="modal-dialog modal-login">
             <div class="modal-content pt-3">
                 <div class="modal-header p-0">
