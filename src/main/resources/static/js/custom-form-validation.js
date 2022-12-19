@@ -69,3 +69,36 @@ page.dialogs.element.formRegister.validate({
         page.dialogs.commands.register();
     }
 })
+
+page.dialogs.element.formOrderInfo.validate({
+    onkeyup: function (element) {
+        $(element).valid()
+    },
+    onclick: false,
+    onfocusout: false,
+    rules: {
+        orderFullName: {
+            required: true,
+        },
+        orderPhoneNumber: {
+            required: true
+        },
+        orderAddress: {
+            required: true
+        },
+    },
+    messages: {
+        orderFullName: {
+            required: 'This field is required.',
+        },
+        orderPhoneNumber: {
+            required: 'This field is required.'
+        },
+        orderAddress: {
+            required: 'This field is required.'
+        },
+    },
+    submitHandler: function () {
+        page.dialogs.commands.checkOut();
+    }
+})

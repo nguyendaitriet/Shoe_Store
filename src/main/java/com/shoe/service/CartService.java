@@ -10,5 +10,6 @@ public interface CartService {
     ArrayList<CartProduct> getAllCartProducts();
     void addProduct(CartProductParam cartProductParam);
     void updateProduct(ArrayList<CartProductParam> cartProductUpdateList);
+    void removeAllProducts();
     void removeProduct(int id);
 }

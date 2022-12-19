@@ -61,7 +61,13 @@ public class CartServiceImpl implements CartService {
     }
 
     @Override
+    public void removeAllProducts() {
+        cartList = new ArrayList<>();
+    }
+
+    @Override
     public void removeProduct(int productItemId) {
         cartList.remove(new CartProduct(productItemId));
     }
+
 }

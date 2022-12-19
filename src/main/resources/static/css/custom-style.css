@@ -7,3 +7,8 @@ label.error {
     margin-top: 10px;
     color: white;
 }
+
+#frm-order-info label.error {
+    margin-top: 10px;
+    color: red;
+}

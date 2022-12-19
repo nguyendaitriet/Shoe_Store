@@ -3,6 +3,7 @@ class CommonApp {
     static API_ENDPOINT = this.DOMAIN + "/api";
     static BASE_URL_PRODUCT = this.API_ENDPOINT + "/product";
     static BASE_URL_CART_PRODUCT = this.API_ENDPOINT + "/cart-product";
+    static BASE_URL_ORDER = this.API_ENDPOINT + "/order";
     static BASE_URL_AUTH = this.API_ENDPOINT + "/auth";
 
     static ERROR_400 = "Bad request. Check information again!";

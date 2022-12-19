@@ -22,6 +22,7 @@ let page = {
         addCartProductToList: CommonApp.BASE_URL_CART_PRODUCT + "/add",
         updateCartProductList: CommonApp.BASE_URL_CART_PRODUCT + "/update",
         removeCartProductFromList: CommonApp.BASE_URL_CART_PRODUCT + "/remove",
+        createNewOrder: CommonApp.BASE_URL_ORDER + "/create",
     },
     element: {},
     loadData: {},
@@ -52,28 +53,38 @@ page.dialogs.element.modalCart = $('#mdCart');
 page.dialogs.element.grandTotalPrice = $('.grand-total-price');
 page.dialogs.element.tbCartProductBody = $('.tb-cart-product tbody');
 page.dialogs.element.btnUpdateCart = $('#btn-update-cart');
+page.dialogs.element.btnCheckOut = $('#btn-checkout');
 page.dialogs.element.formOrderInfo = $('#frm-order-info');
+page.dialogs.element.orderFullName = $('#order-full-name');
+page.dialogs.element.orderPhoneNumber = $('#order-phone-number');
+page.dialogs.element.orderAddress = $('#order-address');
+page.dialogs.commands.getCartProductUpdateList = () => {
+    let table = document.querySelector('.tb-cart-product');
+    let cartProductUpdateList = [];
+
+    for (let i = 1, row; row = table.rows[i]; i++) {
+        let cartProductParam = new CartProductParam();
+        let rowSelector = $(`#${row.id}`);
+
+        cartProductParam.productId = rowSelector.data('product');
+        cartProductParam.quantity = rowSelector.find('#quantityCart').val();
+        cartProductParam.sizeId = rowSelector.find('.form-control').val();
+
+        cartProductUpdateList.push(cartProductParam);
+    }
+    return cartProductUpdateList;
+}
 page.dialogs.commands.addCartProductToList = (cartProduct) => {
     page.dialogs.element.tbCartProductBody.append($(tempCartProduct(cartProduct.productItemId, cartProduct.sizeId,
         cartProduct.photo, cartProduct.title, cartProduct.price, cartProduct.quantity, cartProduct.totalPrice, cartProduct.productId)));
 }
 page.dialogs.commands.handleBtnUpdateCart = () => {
     page.dialogs.element.btnUpdateCart.on('click', () => {
-        let table = document.querySelector('.tb-cart-product');
-        let cartProductUpdateList = [];
-
-        for (let i = 1, row; row = table.rows[i]; i++) {
-            let cartProductParam = new CartProductParam();
-            let rowSelector = $(`#${row.id}`);
-
-            cartProductParam.productId = rowSelector.data('product');
-            cartProductParam.quantity = rowSelector.find('#quantityCart').val();
-            cartProductParam.sizeId = rowSelector.find('.form-control').val();
-
-            cartProductUpdateList.push(cartProductParam);
+        let cartProductUpdateList = page.dialogs.commands.getCartProductUpdateList();
+        if (cartProductUpdateList.length === 0) {
+            CommonApp.IziToast.showErrorAlert('There is no product in your cart!')
+            return;
         }
-        console.log(cartProductUpdateList);
-
         $.ajax({
             type: "PUT",
             headers: {
@@ -110,6 +121,41 @@ page.dialogs.commands.handleBtnRemoveCartProduct = () => {
             })
     })
 }
+page.dialogs.commands.checkOut = () => {
+    let orderInfoParam = {
+        cartProductUpdateList: [],
+        userInfoParam: {
+            fullName: {},
+            phoneNumber: {},
+            address: {},
+        }
+    }
+    orderInfoParam.cartProductUpdateList = page.dialogs.commands.getCartProductUpdateList();
+    if (orderInfoParam.cartProductUpdateList.length === 0) {
+        CommonApp.IziToast.showErrorAlert('There is no product in your cart!')
+        return;
+    }
+    orderInfoParam.userInfoParam.fullName = page.dialogs.element.orderFullName.val().trim();
+    orderInfoParam.userInfoParam.phoneNumber = page.dialogs.element.orderPhoneNumber.val().trim();
+    orderInfoParam.userInfoParam.address = page.dialogs.element.orderAddress.val().trim();
+    $.ajax({
+        type: "POST",
+        headers: {
+            'Accept': 'application/json',
+            'Content-Type': 'application/json',
+        },
+        url: page.urls.createNewOrder,
+        data: JSON.stringify(orderInfoParam)
+    })
+        .done(() => {
+            page.dialogs.element.modalCart.modal('hide');
+            CommonApp.SweetAlert.showSuccessAlert('Successful payment!')
+        })
+        .fail((jqXHR) => {
+            CommonApp.handleFailedTasks(jqXHR);
+        })
+
+}
 page.dialogs.loadData.getAllCartProducts = () => {
     $.ajax({
         type: "GET",
@@ -138,6 +184,7 @@ page.dialogs.loadData.getAllCartProducts = () => {
         })
 }
 page.dialogs.close.modalCart = () => {
+    page.dialogs.element.grandTotalPrice.text('0$');
     $('.tb-cart-product tbody tr').remove();
 }
 
@@ -230,7 +277,6 @@ page.dialogs.close.modalRegister = () => {
     $('body').removeClass('modal-open');
     $('.modal-backdrop').remove();
 }
-
 
 page.loadData.getAllHomeProducts = () => {
     return $.ajax({
@@ -343,6 +389,9 @@ page.initializeControlEvent = () => {
 
     page.dialogs.commands.handleBtnRemoveCartProduct();
     page.dialogs.commands.handleBtnUpdateCart();
+    page.dialogs.element.btnCheckOut.on('click', () => {
+        page.dialogs.element.formOrderInfo.submit();
+    })
     page.dialogs.element.modalCart.on("hidden.bs.modal", function () {
         page.dialogs.close.modalCart();
     });

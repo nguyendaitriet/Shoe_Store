@@ -31,4 +31,13 @@ public class Order {
     @ManyToOne(optional = false)
     @JoinColumn(name = "userId", nullable = false)
     private User user;
+
+    @Column(name = "fullName", length = 100)
+    private String fullName;
+
+    @Column(name = "phoneNumber", length = 50)
+    private String phoneNumber;
+
+    @Column(name = "address", length = 500)
+    private String address;
 }
