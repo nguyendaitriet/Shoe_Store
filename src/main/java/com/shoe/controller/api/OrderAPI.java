@@ -14,6 +14,11 @@ public class OrderAPI {
     @Autowired
     private OrderService orderService;
 
+    @GetMapping
+    public ResponseEntity<?> createNewOrder(Authentication authentication) {
+        return new ResponseEntity<>(orderService.getAllOrderResult(authentication), HttpStatus.OK);
+    }
+
     @PostMapping("/create")
     public ResponseEntity<?> createNewOrder(@RequestBody OrderInfoParam orderInfoParam, Authentication authentication) {
         if (authentication == null) {

@@ -23,6 +23,8 @@ let page = {
         updateCartProductList: CommonApp.BASE_URL_CART_PRODUCT + "/update",
         removeCartProductFromList: CommonApp.BASE_URL_CART_PRODUCT + "/remove",
         createNewOrder: CommonApp.BASE_URL_ORDER + "/create",
+        getAllOrders: CommonApp.BASE_URL_ORDER,
+
     },
     element: {},
     loadData: {},
@@ -43,6 +45,7 @@ page.element.sizeOption = $('.size-option');
 page.element.tempHomeProduct = $('#tempHomeProduct');
 page.element.tempOption = $('#tempOption');
 page.element.tempCartProduct = $('#tempCartProduct');
+page.element.tempOrder = $('#tempOrder');
 page.element.currentUsername = $('#currentUsername');
 
 page.element.cartLink = $('.cart-link');
@@ -269,6 +272,7 @@ page.dialogs.commands.register = () => {
             page.dialogs.element.modalLogin.modal('show');
         })
         .fail((jqXHR) => {
+            console.log(jqXHR)
             CommonApp.handleFailedTasks(jqXHR);
         })
 }
@@ -279,6 +283,34 @@ page.dialogs.close.modalRegister = () => {
     $('body').removeClass('modal-open');
     $('.modal-backdrop').remove();
 }
+
+//Order modal
+page.dialogs.element.modalOrder = $('#mdOrder');
+page.dialogs.element.tbOrderBody = $('.tb-order tbody');
+page.dialogs.commands.addOrderToTable = (orderResult) => {
+    page.dialogs.element.tbOrderBody.append($(tempOrder(orderResult.id, orderResult.fullName, orderResult.address,
+        orderResult.phoneNumber, orderResult.totalPrice, orderResult.totalItems, orderResult.creationDate)));
+}
+page.dialogs.loadData.getAllOrders = () => {
+    $.ajax({
+        type: "GET",
+        url: page.urls.getAllOrders
+    })
+        .done((orderResultList) => {
+            console.log(orderResultList)
+            $.each(orderResultList, (index, orderResult) => {
+                page.dialogs.commands.addOrderToTable(orderResult);
+            });
+        })
+        .fail((jqXHR) => {
+            console.log(jqXHR)
+            CommonApp.handleFailedTasks(jqXHR);
+        })
+}
+page.dialogs.close.modalOrder = () => {
+    page.dialogs.element.tbOrderBody.html('');
+}
+
 
 page.loadData.getAllHomeProducts = () => {
     return $.ajax({
@@ -304,6 +336,7 @@ page.loadData.getAllHomeProducts = () => {
 let tempHomeProduct = $.validator.format($.trim(page.element.tempHomeProduct.val().toString()));
 let tempOption = $.validator.format($.trim(page.element.tempOption.val().toString()));
 let tempCartProduct = $.validator.format($.trim(page.element.tempCartProduct.val().toString()));
+let tempOrder = $.validator.format($.trim(page.element.tempOrder.val().toString()));
 
 page.commands.addHomeProduct = (homeProduct) => {
     page.element.productArea.append($(tempHomeProduct(homeProduct.id, homeProduct.title, homeProduct.photo, homeProduct.price)));
@@ -339,6 +372,13 @@ page.commands.handleLoginLink = () => {
     })
 }
 
+page.commands.handleAccountLink = () => {
+    page.element.accountLink.on('click', () => {
+        page.dialogs.element.modalOrder.modal('show');
+        page.dialogs.loadData.getAllOrders();
+    })
+}
+
 page.commands.handleAddToCartBtn = () => {
     $(document).on("click", ".add_cart_btn", function () {
         let id = $(this).data("id");
@@ -371,6 +411,7 @@ page.commands.handleAddToCartBtn = () => {
 page.initializeControlEvent = () => {
     page.commands.handleCartLink();
     page.commands.handleLoginLink();
+    page.commands.handleAccountLink();
     page.commands.handleAddToCartBtn();
     page.commands.handlePlusQuantity();
     page.commands.handleMinusQuantity();
@@ -396,6 +437,10 @@ page.initializeControlEvent = () => {
     })
     page.dialogs.element.modalCart.on("hidden.bs.modal", function () {
         page.dialogs.close.modalCart();
+    });
+
+    page.dialogs.element.modalOrder.on("hidden.bs.modal", function () {
+        page.dialogs.close.modalOrder();
     });
 
 }

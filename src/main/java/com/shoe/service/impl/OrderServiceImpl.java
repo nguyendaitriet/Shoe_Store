@@ -4,6 +4,7 @@ import com.shoe.dao.OrderDAO;
 import com.shoe.dao.OrderItemDAO;
 import com.shoe.dao.UserDAO;
 import com.shoe.dto.order.OrderInfoParam;
+import com.shoe.dto.order.OrderResult;
 import com.shoe.entity.Order;
 import com.shoe.entity.OrderItem;
 import com.shoe.entity.ProductItem;
@@ -51,5 +52,11 @@ public class OrderServiceImpl implements OrderService {
         orderItemDAO.saveAll(orderItemList);
 
         cartService.removeAllProducts();
+    }
+
+    @Override
+    public List<OrderResult> getAllOrderResult(Authentication authentication) {
+        User currentUser = userDAO.findByUsername(authentication.getName()).get();
+        return orderDAO.findAllOrderResult(currentUser.getId());
     }
 }

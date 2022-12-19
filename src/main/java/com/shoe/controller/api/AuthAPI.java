@@ -38,7 +38,7 @@ public class AuthAPI {
     private PasswordEncoder passwordEncoder;
 
     @PostMapping("/signIn")
-    public ResponseEntity<String> authenticateUser(@RequestBody LoginParam loginParam){
+    public ResponseEntity<String> authenticateUser(@RequestBody LoginParam loginParam) {
         Authentication authentication = authenticationManager.authenticate(new UsernamePasswordAuthenticationToken(
                 loginParam.getUsername(), loginParam.getPassword()));
 
@@ -47,10 +47,10 @@ public class AuthAPI {
     }
 
     @PostMapping("/signUp")
-    public ResponseEntity<?> registerUser(@RequestBody SignUpParam signUpParam){
+    public ResponseEntity<?> registerUser(@RequestBody SignUpParam signUpParam) {
 
         // add check for email exists in DB
-        if(userDAO.existsByUsername(signUpParam.getUsername())){
+        if (userDAO.existsByUsername(signUpParam.getUsername())) {
             return new ResponseEntity<>("Email is already taken!", HttpStatus.CONFLICT);
         }
 
