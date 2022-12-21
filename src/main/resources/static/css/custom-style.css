@@ -12,3 +12,11 @@ label.error {
     margin-top: 10px;
     color: red;
 }
+
+/*dropdown*/
+
+.dropdown-menu a {
+    margin-left: 0;
+    color: #000000;
+    text-transform: capitalize;
+}

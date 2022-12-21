@@ -51,6 +51,7 @@ page.element.currentUsername = $('#currentUsername');
 page.element.cartLink = $('.cart-link');
 page.element.loginLink = $('.login-link');
 page.element.accountLink = $('.account-link');
+page.element.orderHistoryLink = $('.order-history-link');
 
 //Cart modal
 page.dialogs.element.modalCart = $('#mdCart');
@@ -372,8 +373,8 @@ page.commands.handleLoginLink = () => {
     })
 }
 
-page.commands.handleAccountLink = () => {
-    page.element.accountLink.on('click', () => {
+page.commands.handleOrderHistoryLink = () => {
+    page.element.orderHistoryLink.on('click', () => {
         page.dialogs.element.modalOrder.modal('show');
         page.dialogs.loadData.getAllOrders();
     })
@@ -411,7 +412,7 @@ page.commands.handleAddToCartBtn = () => {
 page.initializeControlEvent = () => {
     page.commands.handleCartLink();
     page.commands.handleLoginLink();
-    page.commands.handleAccountLink();
+    page.commands.handleOrderHistoryLink();
     page.commands.handleAddToCartBtn();
     page.commands.handlePlusQuantity();
     page.commands.handleMinusQuantity();

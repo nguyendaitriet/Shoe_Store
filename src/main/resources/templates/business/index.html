@@ -28,12 +28,19 @@
             </from>
 
             <div class="user_option_box">
-              <a href="javascript:;" class="account-link" hidden>
-                <i class="fa fa-user" aria-hidden="true"></i>
-                <span>
-                  My Account
-                </span>
-              </a>
+
+              <div class="dropdown show account-link" hidden>
+                <a href="#" class="account-link dropdown-toggle " role="button" id="accountLink"
+                   data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                  <i class="fa fa-user" aria-hidden="true"></i>
+                  <span>My Account</span>
+                </a>
+                <div class="dropdown-menu" aria-labelledby="accountLink">
+                  <a href="#" class="dropdown-item order-history-link" role="button">Order History</a>
+                  <a href="/logout" class="dropdown-item" role="button">Log out</a>
+                </div>
+              </div>
+
               <a href="javascript:" class="login-link">
                 <i class="fa fa-pencil-square-o" aria-hidden="true"></i>
                 <span>
@@ -413,107 +420,107 @@
   <!-- end client section -->
 
   <!-- info section -->
-  <section class="info_section ">
-    <div class="container">
-      <div class="row">
-        <div class="col-md-3">
-          <div class="info_contact">
-            <h5>
-              <a href="" class="navbar-brand">
-                <span>
-                  Minics
-                </span>
-              </a>
-            </h5>
-            <p>
-              <i class="fa fa-map-marker" aria-hidden="true"></i>
-              Address
-            </p>
-            <p>
-              <i class="fa fa-phone" aria-hidden="true"></i>
-              +01 1234567890
-            </p>
-            <p>
-              <i class="fa fa-envelope" aria-hidden="true"></i>
-              demo@gmail.com
-            </p>
-          </div>
-        </div>
-        <div class="col-md-3">
-          <div class="info_info">
-            <h5>
-              Information
-            </h5>
-            <p>
-              Eligendi sunt, provident, debitis nemo, facilis cupiditate velit libero dolorum aperiam enim nulla iste
-              maxime corrupti ad illo libero minus.
-            </p>
-          </div>
-        </div>
-        <div class="col-md-3">
-          <div class="info_links">
-            <h5>
-              Useful Link
-            </h5>
-            <ul>
-              <li>
-                <a href="index.html">
-                  Home
-                </a>
-              </li>
-              <li>
-                <a href="about.html">
-                  About
-                </a>
-              </li>
-              <li>
-                <a href="product.html">
-                  Products
-                </a>
-              </li>
-              <li>
-                <a href="why.html">
-                  Why Us
-                </a>
-              </li>
-              <li>
-                <a href="testimonial.html">
-                  Testimonial
-                </a>
-              </li>
-            </ul>
-          </div>
-        </div>
-        <div class="col-md-3">
-          <div class="info_form ">
-            <h5>
-              Newsletter
-            </h5>
-            <form action="">
-              <input type="email" placeholder="Enter your email">
-              <button>
-                Subscribe
-              </button>
-            </form>
-            <div class="social_box">
-              <a href="">
-                <i class="fa fa-facebook" aria-hidden="true"></i>
-              </a>
-              <a href="">
-                <i class="fa fa-twitter" aria-hidden="true"></i>
-              </a>
-              <a href="">
-                <i class="fa fa-instagram" aria-hidden="true"></i>
-              </a>
-              <a href="">
-                <i class="fa fa-youtube" aria-hidden="true"></i>
-              </a>
-            </div>
-          </div>
-        </div>
-      </div>
-    </div>
-  </section>
+<!--  <section class="info_section ">-->
+<!--    <div class="container">-->
+<!--      <div class="row">-->
+<!--        <div class="col-md-3">-->
+<!--          <div class="info_contact">-->
+<!--            <h5>-->
+<!--              <a href="" class="navbar-brand">-->
+<!--                <span>-->
+<!--                  Minics-->
+<!--                </span>-->
+<!--              </a>-->
+<!--            </h5>-->
+<!--            <p>-->
+<!--              <i class="fa fa-map-marker" aria-hidden="true"></i>-->
+<!--              Address-->
+<!--            </p>-->
+<!--            <p>-->
+<!--              <i class="fa fa-phone" aria-hidden="true"></i>-->
+<!--              +01 1234567890-->
+<!--            </p>-->
+<!--            <p>-->
+<!--              <i class="fa fa-envelope" aria-hidden="true"></i>-->
+<!--              demo@gmail.com-->
+<!--            </p>-->
+<!--          </div>-->
+<!--        </div>-->
+<!--        <div class="col-md-3">-->
+<!--          <div class="info_info">-->
+<!--            <h5>-->
+<!--              Information-->
+<!--            </h5>-->
+<!--            <p>-->
+<!--              Eligendi sunt, provident, debitis nemo, facilis cupiditate velit libero dolorum aperiam enim nulla iste-->
+<!--              maxime corrupti ad illo libero minus.-->
+<!--            </p>-->
+<!--          </div>-->
+<!--        </div>-->
+<!--        <div class="col-md-3">-->
+<!--          <div class="info_links">-->
+<!--            <h5>-->
+<!--              Useful Link-->
+<!--            </h5>-->
+<!--            <ul>-->
+<!--              <li>-->
+<!--                <a href="index.html">-->
+<!--                  Home-->
+<!--                </a>-->
+<!--              </li>-->
+<!--              <li>-->
+<!--                <a href="about.html">-->
+<!--                  About-->
+<!--                </a>-->
+<!--              </li>-->
+<!--              <li>-->
+<!--                <a href="product.html">-->
+<!--                  Products-->
+<!--                </a>-->
+<!--              </li>-->
+<!--              <li>-->
+<!--                <a href="why.html">-->
+<!--                  Why Us-->
+<!--                </a>-->
+<!--              </li>-->
+<!--              <li>-->
+<!--                <a href="testimonial.html">-->
+<!--                  Testimonial-->
+<!--                </a>-->
+<!--              </li>-->
+<!--            </ul>-->
+<!--          </div>-->
+<!--        </div>-->
+<!--        <div class="col-md-3">-->
+<!--          <div class="info_form ">-->
+<!--            <h5>-->
+<!--              Newsletter-->
+<!--            </h5>-->
+<!--            <form action="">-->
+<!--              <input type="email" placeholder="Enter your email">-->
+<!--              <button>-->
+<!--                Subscribe-->
+<!--              </button>-->
+<!--            </form>-->
+<!--            <div class="social_box">-->
+<!--              <a href="">-->
+<!--                <i class="fa fa-facebook" aria-hidden="true"></i>-->
+<!--              </a>-->
+<!--              <a href="">-->
+<!--                <i class="fa fa-twitter" aria-hidden="true"></i>-->
+<!--              </a>-->
+<!--              <a href="">-->
+<!--                <i class="fa fa-instagram" aria-hidden="true"></i>-->
+<!--              </a>-->
+<!--              <a href="">-->
+<!--                <i class="fa fa-youtube" aria-hidden="true"></i>-->
+<!--              </a>-->
+<!--            </div>-->
+<!--          </div>-->
+<!--        </div>-->
+<!--      </div>-->
+<!--    </div>-->
+<!--  </section>-->
 
   <!-- end info_section -->
 
